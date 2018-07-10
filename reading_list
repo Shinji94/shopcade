@@ -34,3 +34,8 @@ XGBOOST official document:https://xgboost.readthedocs.io/en/latest/model.html
 etsy  多模型拼接  LR( CNN + LR + 贝叶斯平滑):https://arxiv.org/pdf/1711.01377.pdf
 大白话 A Logistic Regression Approach to Ad Click Prediction  （LR+L1 LR+L2 LR+FEATURE SELECTION）：
 https://pdfs.semanticscholar.org/d1c9/740a8a642505d9caf813a711023ea928d599.pdf
+
+7.11
+
+HOW To TRAIN A LOGISTIC REGRESSION:
+https://quant.la/Article/View/550/Sklearn-%E4%B8%8E-TensorFlow-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9E%E7%94%A8%E6%8C%87%E5%8D%97%28-%E4%B8%8B%EF%BC%89-%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B.html
