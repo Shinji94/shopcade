@@ -1,0 +1,36 @@
+http://www.gatsby.ucl.ac.uk/~amnih/papers/pmf.pdf
+https://beckernick.github.io/matrix-factorization-recommender/
+http://www.gatsby.ucl.ac.uk/~amnih/papers/pmf.pdf
+https://cambridgespark.com/content/tutorials/implementing-your-own-recommender-systems-in-Python/index.html
+https://blog.csdn.net/zhongkejingwang/article/details/43083603
+https://github.com/jingchenUSTC/SVDRecommenderSystem
+https://github.com/revantkumar/Collaborative-Filtering/blob/master/code/itemBased.py
+https://towardsdatascience.com/various-implementations-of-collaborative-filtering-100385c6dfe0
+
+
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.78.8384&rep=rep1&type=pdf
+
+
+2018-06-25 23:29:03
+check this github for more paper,tutorials
+https://github.com/wnzhang/rtb-papers/
+
+06-26 
+http://wnzhang.net/share/rtb-papers/fb-ad-ctr.pdf
+
+06-27 知乎 点击率预测的理念思路
+https://zhuanlan.zhihu.com/p/21479297
+https://zhuanlan.zhihu.com/p/23499698
+
+6.29
+XGBOOST official document:https://xgboost.readthedocs.io/en/latest/model.html 
+
+
+7.05
+关于点击率模型，你知道这三点就够了 good ：http://www.meihua.info/a/65329   
+点击率预估的几个经典模型简介：https://blog.csdn.net/starzhou/article/details/51769561
+
+7.10
+etsy  多模型拼接  LR( CNN + LR + 贝叶斯平滑):https://arxiv.org/pdf/1711.01377.pdf
+大白话 A Logistic Regression Approach to Ad Click Prediction  （LR+L1 LR+L2 LR+FEATURE SELECTION）：
+https://pdfs.semanticscholar.org/d1c9/740a8a642505d9caf813a711023ea928d599.pdf
