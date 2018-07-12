@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jul  5 17:29:40 2018
+Created on Thu Jul 12 16:50:40 2018
 
 @author: xinji
 """
+
 
 import pandas as pd
 import numpy as np
 from sklearn import preprocessing
 import matplotlib.pyplot as plt 
 plt.rc("font", size=14)
-from sklearn.linear_model import LogisticRegression
 from sklearn.cross_validation import train_test_split
 import seaborn as sns
 import os 
-from sklearn import preprocessing
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_curve
 
 scaler = preprocessing.MinMaxScaler()
 min_max_scaler = preprocessing.MinMaxScaler()
@@ -86,100 +87,9 @@ X_train = X_train.drop(['pid'],axis = 1)
 test = X_test['pid']
 X_test = X_test.drop(['pid'],axis = 1)
 
-from sklearn.linear_model import SGDClassifier
-from sklearn import metrics
-from sklearn.metrics import log_loss
-logreg = SGDClassifier(loss="log", penalty="l1",warm_start = True)
-logreg.fit(X_train, y_train)
-
-y_pred = logreg.predict(X_test)
-loss = log_loss(y_pred,y_test)
-print('Accuracy of logistic regression classifier on test set: {:.2f}'.format(logreg.score(X_test, y_test)))
-print('logloss of logistic regression classifier on test set: ',loss)
-
-logreg2 = SGDClassifier(loss="log", penalty="l2",warm_start = True)
-logreg2.fit(X_train, y_train)
-#logreg2.partial_fit()
-y_pred2 = logreg2.predict(X_test)
-loss2 = log_loss(y_pred2,y_test)
-print('Accuracy of logistic regression classifier on test set: {:.2f}'.format(logreg2.score(X_test, y_test)))
-print('logloss of logistic regression classifier2 on test set: ',loss2)
-
-from sklearn import model_selection
-from sklearn.model_selection import cross_val_score
-kfold = model_selection.KFold(n_splits=10, random_state=7)
-modelCV = logreg
-scoring = 'accuracy'
-results = model_selection.cross_val_score(modelCV, X_train, y_train, cv=kfold, scoring=scoring)
-print("10-fold cross validation average accuracy: %.3f" % (results.mean()))
-
-from sklearn.metrics import confusion_matrix
-confusion_matrix = confusion_matrix(y_test, y_pred)
-print(confusion_matrix)
-
-from sklearn.metrics import classification_report
-print(classification_report(y_test, y_pred))
-# =============================================================================
-# roc CURVE
-# =============================================================================
-from sklearn.metrics import roc_auc_score
-from sklearn.metrics import roc_curve
-logit_roc_auc = roc_auc_score(y_test, logreg.predict(X_test))
-fpr, tpr, thresholds = roc_curve(y_test, logreg.predict_proba(X_test)[:,1])
-plt.figure()
-plt.plot(fpr, tpr, label='Logistic Regression (area = %0.2f)' % logit_roc_auc)
-plt.plot([0, 1], [0, 1],'r--')
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('Receiver operating characteristic')
-plt.legend(loc="lower right")
-plt.savefig('Log_ROC')
-plt.show()
-
-logit_roc_auc = roc_auc_score(y_test, logreg2.predict(X_test))
-fpr, tpr, thresholds = roc_curve(y_test, logreg2.predict_proba(X_test)[:,1])
-plt.figure()
-plt.plot(fpr, tpr, label='Logistic Regression2 (area = %0.2f)' % logit_roc_auc)
-plt.plot([0, 1], [0, 1],'r--')
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('Receiver operating characteristic')
-plt.legend(loc="lower right")
-plt.savefig('Log2_ROC')
-plt.show()
-
-acc = [logreg.score(X_test, y_test),logreg2.score(X_test, y_test)]
-logloss = [loss,loss2]
-modelname = ['LG+L1','LG+L2']
-result = pd.DataFrame({'model':modelname,'acc':acc,'logloss':logloss})
-result.to_csv('model_result.csv',index = False)
-# =============================================================================
-# SAVE MODEL
-# =============================================================================
-from sklearn.externals import joblib
-#joblib.dump(logit_model, 'smlogreg.pkl') 
-#Later you can load back the pickled model (possibly in another Python process) with:
-joblib.dump(logreg, 'logreg+L1.pkl') 
-joblib.dump(logreg2, 'logreg+L2.pkl')
-#clf = joblib.load('filename.pkl') 
-
-
-
-# =============================================================================
-# xgboost 
-# =============================================================================
-
-
-
 import xgboost as xgboost
 from sklearn.metrics import explained_variance_score,accuracy_score,roc_auc_score
-from xgboost import plot_tree,XGBClassifier
 import matplotlib.pyplot as plt
-from sklearn.feature_selection import SelectFromModel
 import math
 from sklearn.model_selection import KFold
 from collections import defaultdict
@@ -230,7 +140,7 @@ acc= []
 rmse = []
 for N in x: 
     xgb = xgboost.XGBRegressor(n_estimators=N, learning_rate=0.2, gamma=0, subsample=0.75,
-                               colsample_bytree=1, max_depth=8,silent = 0,)
+                               colsample_bytree=1, max_depth=8,silent = 0,objective= 'binary:logistic')
     traindf, testdf = train_test_split(X_train, test_size = 0.3)
     xgb.fit(X_train,y_train)
     predictions = xgb.predict(X_test)
@@ -254,13 +164,14 @@ print(rmse)
 
 
 #xgboost tuning test 3: start  from tuning the LEARNING RATE
-x = [0.01,0.05,0.1,0.15,0.2,0.2]
+x = [0.01,0.05,0.1,0.15,0.2,0.3]
 aucscore = []
 acc= []
 rmse = []
-for N in x: 
-    xgb = xgboost.XGBRegressor(n_estimators=N, learning_rate=0.2, gamma=0, subsample=0.75,
-                               colsample_bytree=1, max_depth=8,silent = 0,)
+for lr in x: 
+    xgb = xgboost.XGBRegressor(n_estimators=140, learning_rate=lr, gamma=0, subsample=0.75,
+                               colsample_bytree=1, max_depth=8,silent = 0,objective= 'binary:logistic',
+                               verbose=0)
     traindf, testdf = train_test_split(X_train, test_size = 0.3)
     xgb.fit(X_train,y_train)
     predictions = xgb.predict(X_test)
@@ -281,16 +192,7 @@ for N in x:
 print(aucscore)
 print(acc)
 print(rmse)
-
-
-
-
-
-
-
-
-
-
+print('choose lr = 0.15')
 
 b = xgb.get_booster()
 fs = b.get_fscore()
@@ -329,32 +231,4 @@ df[0:9].plot(kind='barh', x='feature', y='fscore', legend=False, figsize=(6, 10)
 plt.title('XGBoost Feature Importance')
 plt.xlabel('relative importance')
 plt.gcf().savefig('feature_importance_xgb.png')
-
-
-
-
-
-# ===============
-# predict mean~p
-# ===============
-
-shape_
-
-#replace the onehot dadta in thedataset and calculate the mean ctr as product_i 's ctr
-one_hot = pd.read_csv('onehot_product.csv')
-
-for pids in one_hot.pid:
-    break
-
-temp = [pids]*len(X_test)
-len(temp)
-
-
-list(one_hot)[21]
-
-
-
-
-
-
 
