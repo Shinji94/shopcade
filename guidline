@@ -4,3 +4,9 @@ scikit-learn GBDT类调参手册：https://www.cnblogs.com/pinard/p/6143927.html
 For tf-idf:
 https://nlpforhackers.io/tf-idf/
 http://www.bogotobogo.com/python/NLTK/tf_idf_with_scikit-learn_NLTK.php
+
+
+
+TO get indices of leaf of each data 
+XGBoost Plotting API以及GBDT组合特征实践:
+https://blog.csdn.net/zhangf666/article/details/70183788
