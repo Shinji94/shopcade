@@ -12,3 +12,7 @@ XGBoost Plotting API以及GBDT组合特征实践:
 https://blog.csdn.net/zhangf666/article/details/70183788
 余音大神的代码：
 https://github.com/lytforgood/MachineLearningTrick
+
+
+为什么离线模型表现和在线A/B test 结果差很多 QUORA：
+https://www.quora.com/What-offline-evaluation-metric-for-recommender-systems-better-correlates-with-online-AB-test-results#cGrYq
