@@ -64,3 +64,5 @@ http://wnzhang.net/share/rtb-papers/ctr-chapelle.pdf
 
 8.15
 NE:https://www.nist.gov/sites/default/files/documents/2017/11/30/nce.pdf
+plot rocauc under keras and compare with other clssifier:
+https://hackernoon.com/simple-guide-on-how-to-generate-roc-plot-for-keras-classifier-2ecc6c73115a
